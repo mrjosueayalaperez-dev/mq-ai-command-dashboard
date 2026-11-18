@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="app_title">M&amp;Q AI Command Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark">M&amp;Q</span>
+    <h1 data-i18n="app_title">M&amp;Q AI Command Dashboard</h1>
+  </div>
+  <nav class="mainnav" aria-label="main">
+    <button type="button" class="view-link is-active" data-view="command" data-i18n="nav_overview">Overview</button>
+    <button type="button" class="view-link" data-view="operations" data-i18n="nav_operations">Operations</button>
+    <button type="button" class="view-link" data-view="network" data-i18n="nav_network">Network</button>
+    <a href="#approvals" data-i18n="nav_approvals">Approvals</a>
+    <a href="#audit" data-i18n="nav_audit">Audit</a>
+  </nav>
+  <label class="lang-switch">
+    <span data-i18n="label_language">Language</span>
+    <select id="lang-select" aria-label="Language">
+      <option value="en">English</option>
+      <option value="es">Español</option>
+      <option value="pt">Português</option>
+      <option value="ht">Kreyòl</option>
+    </select>
+  </label>
+  <div class="user-chip" id="user-chip" hidden>
+    <span class="meta"><span data-i18n="auth_signed_in_as">Signed in as</span>:
+      <strong id="user-name">—</strong></span>
+    <button type="button" id="sign-out" class="auth-button secondary"
+            data-i18n="auth_sign_out">Sign out</button>
+  </div>
+</header>
+
+<!-- Real login (argon2id accounts + server-side sessions). Shown until
+     /api/auth/me answers 200; every /api call is refused without a
+     session, so this gate is cosmetic — the server enforces it. -->
+<div id="auth-overlay" class="auth-overlay" hidden>
+  <div class="auth-card panel">
+    <h2 data-i18n="auth_sign_in_title">Sign in</h2>
+    <form id="login-form" class="auth-form">
+      <label>
+        <span data-i18n="auth_username">Username</span>
+        <input id="login-username" name="username" autocomplete="username"
+               required>
+      </label>
+      <label>
+        <span data-i18n="auth_password">Password</span>
+        <input id="login-password" name="password" type="password"
+               autocomplete="current-password" required>
+      </label>
+      <p id="login-error" class="auth-error" hidden></p>
+      <button type="submit" class="auth-button"
+              data-i18n="auth_sign_in">Sign in</button>
+    </form>
+    <form id="bootstrap-form" class="auth-form" hidden>
+      <p class="meta" data-i18n="auth_bootstrap_title">Create the owner account</p>
+      <p class="meta" data-i18n="auth_bootstrap_note">First-run setup:
+        this install has no owner account yet. Create it now — this form
+        disappears as soon as the owner exists, and from then on accounts
+        are managed inside.</p>
+      <label>
+        <span data-i18n="auth_username">Username</span>
+        <input id="bootstrap-username" name="username" autocomplete="username"
+               required>
+      </label>
+      <label>
+        <span data-i18n="auth_password">Password</span>
+        <input id="bootstrap-password" name="password" type="password"
+               autocomplete="new-password" required>
+      </label>
+      <label>
+        <span data-i18n="auth_confirm_password">Confirm password</span>
+        <input id="bootstrap-confirm" name="confirm_password" type="password"
+               autocomplete="new-password" required>
+      </label>
+      <p id="bootstrap-error" class="auth-error" hidden></p>
+      <button type="submit" class="auth-button"
+              data-i18n="auth_bootstrap_create">Create owner account</button>
+    </form>
+    <form id="verify-form" class="auth-form" hidden>
+      <p class="meta" data-i18n="auth_two_step_title">Two-step verification</p>
+      <label id="verify-code-label">
+        <span data-i18n="auth_code">Authenticator code</span>
+        <input id="verify-code" name="code" inputmode="numeric"
+               autocomplete="one-time-code">
+      </label>
+      <label id="verify-recovery-label" hidden>
+        <span data-i18n="auth_recovery_code">Recovery code</span>
+        <input id="verify-recovery" name="recovery_code"
+               autocomplete="off">
+      </label>
+      <p id="verify-error" class="auth-error" hidden></p>
+      <button type="submit" class="auth-button"
+              data-i18n="auth_verify">Verify</button>
+      <button type="button" id="verify-toggle" class="auth-button secondary"
+              data-i18n="auth_use_recovery">Use a recovery code</button>
+      <button type="button" id="verify-back" class="auth-button secondary"
+              data-i18n="auth_back">Back</button>
+    </form>
+  </div>
+</div>
+
+<div id="demo-banner" class="demo-banner" hidden>
+  <strong data-i18n="banner_demo">DEMO DATA — simulated agents, not connected systems</strong>
+</div>
+
+<main>
+  <!-- Concept A: Executive Command Center (primary) -->
+  <div id="view-command" class="view">
+    <section id="overview" class="panel">
+      <h2 data-i18n="section_overview">Executive Overview</h2>
+      <p class="meta">
+        <span data-i18n="label_as_of">As of</span>:
+        <span id="as-of">—</span> ·
+        <span data-i18n="label_data_source">Data source</span>:
+        <span id="data-source">—</span>
+      </p>
+      <div class="cards">
+        <div class="card">
+          <span class="card-value" id="total-agents">—</span>
+          <span class="card-label" data-i18n="label_total_agents">Registered agents</span>
+        </div>
+        <div class="card">
+          <span class="card-value" id="team-count">—</span>
+          <span class="card-label" data-i18n="label_teams">Teams</span>
+        </div>
+        <div class="card">
+          <span class="card-value" id="pending-count">—</span>
+          <span class="card-label" data-i18n="label_pending_approvals">Pending approvals</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="status" class="panel">
+      <h2 data-i18n="section_status_counts">Agents by status</h2>
+      <div id="status-grid" class="status-grid"></div>
+    </section>
+
+    <section id="teams" class="panel">
+      <h2 data-i18n="section_teams">Teams</h2>
+      <ul id="team-list" class="plain-list"></ul>
+    </section>
+
+    <section id="approvals" class="panel">
+      <h2 data-i18n="section_pending_approvals">Pending approvals</h2>
+      <ul id="approval-list" class="plain-list"></ul>
+      <p id="no-approvals" class="muted" data-i18n="label_none" hidden>None</p>
+    </section>
+
+    <section id="audit" class="panel">
+      <h2 data-i18n="section_recent_audit">Recent audit events</h2>
+      <ul id="audit-list" class="plain-list mono"></ul>
+    </section>
+  </div>
+
+  <!-- Concept B: Operations Control Room -->
+  <div id="view-operations" class="view" hidden>
+    <section class="panel">
+      <h2 data-i18n="section_operations">Operations control room</h2>
+      <p class="meta">
+        <span data-i18n="label_as_of">As of</span>:
+        <span id="ops-as-of">—</span>
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="section_activity">Live activity</h2>
+      <p class="meta" id="activity-counts"></p>
+      <ul id="activity-list" class="plain-list"></ul>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="label_executions">Executions</h2>
+      <ul id="execution-list" class="plain-list"></ul>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="section_workflow">Workflow visualizer</h2>
+      <label class="lang-switch">
+        <select id="workflow-select" aria-label="Workflow"></select>
+      </label>
+      <div id="workflow-graph" class="graph-box"></div>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="section_performance">Performance</h2>
+      <div id="performance-summary" class="cards"></div>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="section_economics">Model economics</h2>
+      <div id="economics-summary" class="cards"></div>
+      <ul id="price-list" class="plain-list"></ul>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="section_gateway">Gateway connections</h2>
+      <ul id="connection-list" class="plain-list"></ul>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="section_reliability">Reliability</h2>
+      <p class="meta">
+        <span data-i18n="label_service_status">Service status</span>:
+        <span id="service-status">—</span> ·
+        <span data-i18n="label_open_incidents">Open incidents</span>:
+        <span id="open-incidents">—</span>
+      </p>
+      <ul id="incident-list" class="plain-list"></ul>
+    </section>
+  </div>
+
+  <!-- Concept C: Intelligence Network -->
+  <div id="view-network" class="view" hidden>
+    <section class="panel">
+      <h2 data-i18n="section_network">Intelligence network</h2>
+      <p class="meta" data-i18n="label_data_source">Data source</p>
+      <div id="network-graph" class="graph-box"></div>
+      <ul id="network-edges" class="plain-list"></ul>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">
+  <span data-i18n="footer_status">Full local build — all 11 modules, local records only. Implemented ≠ Tested ≠ Deployed.</span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
