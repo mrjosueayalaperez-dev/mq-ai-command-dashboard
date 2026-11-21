@@ -51,6 +51,15 @@ EXPLANATION_SOURCE = "DETERMINISTIC_FALLBACK — PROVIDER_NOT_CONNECTED"
 DISPOSITIONS = ("CONSISTENT", "QUALIFIED_WITH_CONCERNS",
                 "CONTRADICTION_DETECTED", "INSUFFICIENT_DATA")
 
+#: Classification vocabularies this consumer recognizes — the values
+#: _normalize_pipeline_dialect maps the pipeline dialect into and the
+#: internal dialect carries. A classification whose direction or
+#: status is missing or outside these vocabularies is incomplete:
+#: the record has not actually been classified, so there is nothing
+#: for the review to find consistent (fail closed, INSUFFICIENT_DATA).
+VALID_DIRECTIONS = ("LONG", "SHORT", "NO_TRADE")
+VALID_STATUSES = ("QUALIFIED", "REJECTED", "NOT_QUALIFIED")
+
 #: Canonical strategy versions known to this consumer. A record whose
 #: strategy_version does not match its strategy_id is a contradiction:
 #: the record claims one strategy's identity with another's version.
@@ -238,6 +247,27 @@ def review_signal(record: dict) -> dict:
         missing.append("classification")
     if not market:
         missing.append("market_state")
+    # The classification itself must be complete and in-vocabulary.
+    # Without a recognized direction and status the record has not
+    # actually been classified: every contradiction rule below keys
+    # on LONG/SHORT and QUALIFIED, so an absent or out-of-vocabulary
+    # value would otherwise fall through them all and reach
+    # CONSISTENT by default. Fail closed, as for any other record
+    # that cannot be reviewed at all.
+    if direction not in VALID_DIRECTIONS:
+        missing.append("classification.direction")
+        if direction is not None:
+            findings.append(
+                f"classification.direction is {direction!r}, outside"
+                " the recognized vocabulary (LONG, SHORT, NO_TRADE);"
+                " the classification is incomplete.")
+    if status not in VALID_STATUSES:
+        missing.append("classification.status")
+        if status is not None:
+            findings.append(
+                f"classification.status is {status!r}, outside the"
+                " recognized vocabulary (QUALIFIED, REJECTED,"
+                " NOT_QUALIFIED); the classification is incomplete.")
     if record.get("schema_version") not in (None, SCHEMA_VERSION):
         findings.append(
             f"schema_version is {record.get('schema_version')!r},"
