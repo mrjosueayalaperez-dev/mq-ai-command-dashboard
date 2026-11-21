@@ -1,0 +1,477 @@
+{
+  "_comment": "FIXTURES ONLY \u2014 synthetic signal-contract records (schema v1.0) for Analyst consumer tests. Not real market events, not real signals.",
+  "contradictory_long": {
+    "ai_explanation": null,
+    "classification": {
+      "direction": "LONG",
+      "gate_results": [
+        {
+          "gate": "range_established",
+          "reason": "15m range established with validated boundaries",
+          "result": "PASS"
+        },
+        {
+          "gate": "boundary_location",
+          "reason": "price at lower boundary",
+          "result": "PASS"
+        },
+        {
+          "gate": "bias_agreement",
+          "reason": "5m bias is down; does not agree with a long",
+          "result": "FAIL"
+        }
+      ],
+      "missing_data_reasons": [],
+      "qualification_reasons": [
+        "fixture deliberately contradicts itself"
+      ],
+      "rejection_reasons": [],
+      "stale_data_reasons": [],
+      "status": "QUALIFIED"
+    },
+    "contract": "MNQZ6",
+    "data_provider": "fixture",
+    "data_source": "fixture-feed",
+    "data_timestamp": "2026-11-20T17:05:00+00:00",
+    "environment": "PAPER",
+    "idempotency_key": "fix-contra-005",
+    "instrument": "MNQ",
+    "market_state": {
+      "bias_5m": "down",
+      "candle_closed": true,
+      "candle_timestamp": "2026-11-20T17:05:00+00:00",
+      "context_15m": "established range, price at lower boundary",
+      "data_quality": "ok",
+      "ema21": 25102.0,
+      "ema9": 25095.0,
+      "ema_relationship": "ema9_below_ema21",
+      "freshness": "fresh",
+      "price": 25080.0,
+      "range_lower": 25075.0,
+      "range_upper": 25272.0,
+      "rsi14": 35.4,
+      "sr_level": 25075.0,
+      "trigger_1m": null,
+      "vwap": 25130.0,
+      "vwap_relationship": "below"
+    },
+    "received_timestamp": "2026-11-20T17:05:02+00:00",
+    "risk": {
+      "entry": null,
+      "max_simulated_exposure": null,
+      "quantity": null,
+      "reward_risk": null,
+      "risk_approval_status": "UNAPPROVED",
+      "risk_config_version": null,
+      "stop": null,
+      "stop_distance_points": null,
+      "target": null
+    },
+    "schema_version": "1.0",
+    "session": "RTH",
+    "signal_id": "fix-contra-005",
+    "source_event_id": "fix-evt-contra-005",
+    "strategy_id": "STRATEGY_B",
+    "strategy_version": "MQU-SB-001 v1.0",
+    "timeframe": "5m"
+  },
+  "incomplete_record": {
+    "environment": "PAPER",
+    "schema_version": "1.0",
+    "signal_id": "fix-incomplete-007",
+    "strategy_id": "STRATEGY_B",
+    "strategy_version": "MQU-SB-001 v1.0"
+  },
+  "risk_unapproved_populated": {
+    "ai_explanation": null,
+    "classification": {
+      "direction": "LONG",
+      "gate_results": [
+        {
+          "gate": "range_established",
+          "reason": "15m range established with validated boundaries",
+          "result": "PASS"
+        },
+        {
+          "gate": "boundary_location",
+          "reason": "price at lower boundary, not mid-range",
+          "result": "PASS"
+        },
+        {
+          "gate": "engulfing_confirmation",
+          "reason": "5m bullish engulfing at the lower boundary",
+          "result": "PASS"
+        },
+        {
+          "gate": "bias_agreement",
+          "reason": "5m bias up agrees with long",
+          "result": "PASS"
+        }
+      ],
+      "missing_data_reasons": [],
+      "qualification_reasons": [
+        "all Strategy B gates passed at the lower boundary"
+      ],
+      "rejection_reasons": [],
+      "stale_data_reasons": [],
+      "status": "QUALIFIED"
+    },
+    "contract": "MNQZ6",
+    "data_provider": "fixture",
+    "data_source": "fixture-feed",
+    "data_timestamp": "2026-11-20T18:15:00+00:00",
+    "environment": "PAPER",
+    "idempotency_key": "fix-risk-006",
+    "instrument": "MNQ",
+    "market_state": {
+      "bias_5m": "up",
+      "candle_closed": true,
+      "candle_timestamp": "2026-11-20T18:15:00+00:00",
+      "context_15m": "established range, price at lower boundary",
+      "data_quality": "ok",
+      "ema21": 25190.0,
+      "ema9": 25197.0,
+      "ema_relationship": "ema9_above_ema21",
+      "freshness": "fresh",
+      "price": 25212.0,
+      "range_lower": 25205.5,
+      "range_upper": 25402.0,
+      "rsi14": 45.1,
+      "sr_level": 25205.5,
+      "trigger_1m": null,
+      "vwap": 25184.0,
+      "vwap_relationship": "above"
+    },
+    "received_timestamp": "2026-11-20T18:15:02+00:00",
+    "risk": {
+      "entry": 25212.0,
+      "max_simulated_exposure": 1,
+      "quantity": 1,
+      "reward_risk": 2.0,
+      "risk_approval_status": "UNAPPROVED",
+      "risk_config_version": "fixture-unapproved",
+      "stop": 25190.0,
+      "stop_distance_points": 22.0,
+      "target": 25256.0
+    },
+    "schema_version": "1.0",
+    "session": "RTH",
+    "signal_id": "fix-risk-006",
+    "source_event_id": "fix-evt-risk-006",
+    "strategy_id": "STRATEGY_B",
+    "strategy_version": "MQU-SB-001 v1.0",
+    "timeframe": "5m"
+  },
+  "stale_data_rejection": {
+    "ai_explanation": null,
+    "classification": {
+      "direction": "NO_TRADE",
+      "gate_results": [
+        {
+          "gate": "data_freshness",
+          "reason": "feed data is stale; no valid signal may be generated",
+          "result": "FAIL"
+        }
+      ],
+      "missing_data_reasons": [],
+      "qualification_reasons": [],
+      "rejection_reasons": [
+        "stale data"
+      ],
+      "stale_data_reasons": [
+        "data_timestamp is 62 minutes older than received_timestamp"
+      ],
+      "status": "REJECTED"
+    },
+    "contract": "MNQZ6",
+    "data_provider": "fixture",
+    "data_source": "fixture-feed",
+    "data_timestamp": "2026-11-20T13:00:00+00:00",
+    "environment": "PAPER",
+    "idempotency_key": "fix-stale-004",
+    "instrument": "MNQ",
+    "market_state": {
+      "bias_5m": "up",
+      "candle_closed": true,
+      "candle_timestamp": "2026-11-20T13:00:00+00:00",
+      "context_15m": "range context from a stale feed",
+      "data_quality": "stale",
+      "ema21": 25210.0,
+      "ema9": 25215.0,
+      "ema_relationship": "ema9_above_ema21",
+      "freshness": "stale",
+      "price": 25220.0,
+      "range_lower": 25205.5,
+      "range_upper": 25402.0,
+      "rsi14": 47.0,
+      "sr_level": 25205.5,
+      "trigger_1m": null,
+      "vwap": 25200.0,
+      "vwap_relationship": "above"
+    },
+    "received_timestamp": "2026-11-20T14:02:00+00:00",
+    "risk": {
+      "entry": null,
+      "max_simulated_exposure": null,
+      "quantity": null,
+      "reward_risk": null,
+      "risk_approval_status": "UNAPPROVED",
+      "risk_config_version": null,
+      "stop": null,
+      "stop_distance_points": null,
+      "target": null
+    },
+    "schema_version": "1.0",
+    "session": "RTH",
+    "signal_id": "fix-stale-004",
+    "source_event_id": "fix-evt-stale-004",
+    "strategy_id": "STRATEGY_B",
+    "strategy_version": "MQU-SB-001 v1.0",
+    "timeframe": "5m"
+  },
+  "strategy_a_qualified_short_alert": {
+    "ai_explanation": null,
+    "classification": {
+      "direction": "SHORT",
+      "gate_results": [
+        {
+          "gate": "location",
+          "reason": "at a confirmed resistance level",
+          "result": "PASS"
+        },
+        {
+          "gate": "activity",
+          "reason": "activity confirms the level",
+          "result": "PASS"
+        },
+        {
+          "gate": "candle_close",
+          "reason": "closed-candle confirmation",
+          "result": "PASS"
+        },
+        {
+          "gate": "retest",
+          "reason": "retest held",
+          "result": "PASS"
+        },
+        {
+          "gate": "alignment",
+          "reason": "1m ES/MNQ divergence component not evaluable from alert payload",
+          "result": "NOT_EVALUABLE"
+        },
+        {
+          "gate": "risk",
+          "reason": "no approved dollar-risk rule exists yet",
+          "result": "NOT_EVALUABLE"
+        }
+      ],
+      "missing_data_reasons": [],
+      "qualification_reasons": [
+        "evaluable Strategy A gates passed on the alert record"
+      ],
+      "rejection_reasons": [],
+      "stale_data_reasons": [],
+      "status": "QUALIFIED"
+    },
+    "contract": "MNQZ6",
+    "data_provider": "tradingview",
+    "data_source": "tradingview_alert",
+    "data_timestamp": "2026-11-20T16:20:00+00:00",
+    "environment": "PAPER",
+    "idempotency_key": "fix-a-short-003",
+    "instrument": "MNQ",
+    "market_state": {
+      "bias_5m": "down",
+      "candle_closed": true,
+      "candle_timestamp": "2026-11-20T16:20:00+00:00",
+      "context_15m": "15m confirmation bearish",
+      "data_quality": "ok",
+      "ema21": 25166.5,
+      "ema9": 25152.0,
+      "ema_relationship": "ema9_below_ema21",
+      "freshness": "fresh",
+      "price": 25140.5,
+      "range_lower": null,
+      "range_upper": null,
+      "rsi14": 38.6,
+      "sr_level": 25148.0,
+      "trigger_1m": "1m entry trigger fired on closed candle",
+      "vwap": 25196.25,
+      "vwap_relationship": "below"
+    },
+    "received_timestamp": "2026-11-20T16:20:03+00:00",
+    "risk": {
+      "entry": null,
+      "max_simulated_exposure": null,
+      "quantity": null,
+      "reward_risk": null,
+      "risk_approval_status": "UNAPPROVED",
+      "risk_config_version": null,
+      "stop": null,
+      "stop_distance_points": null,
+      "target": null
+    },
+    "schema_version": "1.0",
+    "session": "RTH",
+    "signal_id": "fix-a-short-003",
+    "source_event_id": "fix-evt-a-short-003",
+    "strategy_id": "STRATEGY_A",
+    "strategy_version": "Six Gates v1.0",
+    "timeframe": "1m"
+  },
+  "strategy_b_midrange_no_trade": {
+    "ai_explanation": null,
+    "classification": {
+      "direction": "NO_TRADE",
+      "gate_results": [
+        {
+          "gate": "range_established",
+          "reason": "15m range established with validated boundaries",
+          "result": "PASS"
+        },
+        {
+          "gate": "boundary_location",
+          "reason": "price is mid-range; Strategy B trades outer boundaries only",
+          "result": "FAIL"
+        }
+      ],
+      "missing_data_reasons": [],
+      "qualification_reasons": [],
+      "rejection_reasons": [
+        "mid-range location \u2014 no trade"
+      ],
+      "stale_data_reasons": [],
+      "status": "REJECTED"
+    },
+    "contract": "MNQZ6",
+    "data_provider": "fixture",
+    "data_source": "fixture-feed",
+    "data_timestamp": "2026-11-20T15:10:00+00:00",
+    "environment": "PAPER",
+    "idempotency_key": "fix-b-mid-002",
+    "instrument": "MNQ",
+    "market_state": {
+      "bias_5m": "up",
+      "candle_closed": true,
+      "candle_timestamp": "2026-11-20T15:10:00+00:00",
+      "context_15m": "established range, price mid-range",
+      "data_quality": "ok",
+      "ema21": 25292.0,
+      "ema9": 25298.0,
+      "ema_relationship": "ema9_above_ema21",
+      "freshness": "fresh",
+      "price": 25300.0,
+      "range_lower": 25205.5,
+      "range_upper": 25402.0,
+      "rsi14": 51.0,
+      "sr_level": null,
+      "trigger_1m": null,
+      "vwap": 25290.0,
+      "vwap_relationship": "above"
+    },
+    "received_timestamp": "2026-11-20T15:10:02+00:00",
+    "risk": {
+      "entry": null,
+      "max_simulated_exposure": null,
+      "quantity": null,
+      "reward_risk": null,
+      "risk_approval_status": "UNAPPROVED",
+      "risk_config_version": null,
+      "stop": null,
+      "stop_distance_points": null,
+      "target": null
+    },
+    "schema_version": "1.0",
+    "session": "RTH",
+    "signal_id": "fix-b-mid-002",
+    "source_event_id": "fix-evt-b-mid-002",
+    "strategy_id": "STRATEGY_B",
+    "strategy_version": "MQU-SB-001 v1.0",
+    "timeframe": "5m"
+  },
+  "strategy_b_qualified_long": {
+    "ai_explanation": null,
+    "classification": {
+      "direction": "LONG",
+      "gate_results": [
+        {
+          "gate": "range_established",
+          "reason": "15m range established with validated boundaries",
+          "result": "PASS"
+        },
+        {
+          "gate": "boundary_location",
+          "reason": "price at lower boundary, not mid-range",
+          "result": "PASS"
+        },
+        {
+          "gate": "engulfing_confirmation",
+          "reason": "5m bullish engulfing at the lower boundary",
+          "result": "PASS"
+        },
+        {
+          "gate": "bias_agreement",
+          "reason": "5m bias up agrees with long",
+          "result": "PASS"
+        },
+        {
+          "gate": "structural_invalidation_defined",
+          "reason": "invalidation below the range low is defined",
+          "result": "PASS"
+        }
+      ],
+      "missing_data_reasons": [],
+      "qualification_reasons": [
+        "all Strategy B gates passed at the lower boundary"
+      ],
+      "rejection_reasons": [],
+      "stale_data_reasons": [],
+      "status": "QUALIFIED"
+    },
+    "contract": "MNQZ6",
+    "data_provider": "fixture",
+    "data_source": "fixture-feed",
+    "data_timestamp": "2026-11-20T14:45:00+00:00",
+    "environment": "PAPER",
+    "idempotency_key": "fix-b-long-001",
+    "instrument": "MNQ",
+    "market_state": {
+      "bias_5m": "up",
+      "candle_closed": true,
+      "candle_timestamp": "2026-11-20T14:45:00+00:00",
+      "context_15m": "established range, price at lower boundary",
+      "data_quality": "ok",
+      "ema21": 25188.75,
+      "ema9": 25195.0,
+      "ema_relationship": "ema9_above_ema21",
+      "freshness": "fresh",
+      "price": 25210.25,
+      "range_lower": 25205.5,
+      "range_upper": 25402.0,
+      "rsi14": 44.2,
+      "sr_level": 25205.5,
+      "trigger_1m": null,
+      "vwap": 25180.5,
+      "vwap_relationship": "above"
+    },
+    "received_timestamp": "2026-11-20T14:45:02+00:00",
+    "risk": {
+      "entry": null,
+      "max_simulated_exposure": null,
+      "quantity": null,
+      "reward_risk": null,
+      "risk_approval_status": "UNAPPROVED",
+      "risk_config_version": null,
+      "stop": null,
+      "stop_distance_points": null,
+      "target": null
+    },
+    "schema_version": "1.0",
+    "session": "RTH",
+    "signal_id": "fix-b-long-001",
+    "source_event_id": "fix-evt-b-long-001",
+    "strategy_id": "STRATEGY_B",
+    "strategy_version": "MQU-SB-001 v1.0",
+    "timeframe": "5m"
+  }
+}

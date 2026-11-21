@@ -1106,6 +1106,43 @@ def resolve_incident(incident_id: int, body: dict | None = None,
                                         body or {})
 
 
+# ------------------------------------------------------------- analyst
+
+@app.get("/api/analyst/status")
+def analyst_status(conn=Depends(get_conn),
+                   identity: Identity = Depends(get_identity)):
+    from . import analyst
+    return analyst.status(conn)
+
+
+@app.post("/api/analyst/register")
+def analyst_register(conn=Depends(get_conn),
+                     identity: Identity = Depends(get_identity)):
+    require_owner(identity)
+    from . import analyst
+    return analyst.register_analyst(conn, identity.actor)
+
+
+@app.post("/api/analyst/ask")
+def analyst_ask(body: dict, conn=Depends(get_conn),
+                identity: Identity = Depends(get_identity)):
+    require_owner(identity)
+    from . import analyst
+    return analyst.ask(conn, identity, body.get("question", ""),
+                       source=body.get("data_source", "live"))
+
+
+@app.post("/api/analyst/draft", status_code=201)
+def analyst_draft(body: dict, conn=Depends(get_conn),
+                  identity: Identity = Depends(get_identity)):
+    require_write(identity)
+    from . import analyst
+    try:
+        return analyst.draft_assignment(conn, identity, body)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc))
+
+
 # -------------------------------------------------------------- front end
 
 @app.get("/")
@@ -1115,3 +1152,4 @@ def index():
 
 if os.path.isdir(WEB_DIR):
     app.mount("/", StaticFiles(directory=WEB_DIR), name="web")
+

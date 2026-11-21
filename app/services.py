@@ -23,7 +23,8 @@ from .taxonomy import (
     requires_evidence,
 )
 
-CONSEQUENTIAL_ACTIONS = ("promote_operational", "deactivate_agent")
+CONSEQUENTIAL_ACTIONS = ("promote_operational", "deactivate_agent",
+                         "analyst_task_proposal")
 
 
 def slugify(text: str) -> str:
