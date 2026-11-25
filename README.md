@@ -7,10 +7,13 @@ NOT DEPLOYED.**
 An independent product: an intelligence operations platform to coordinate,
 supervise, monitor, and manage a growing ecosystem of AI agents. It is **not**
 a replacement for M&Q CRM, is not built in the M&Q AI CONNECT repository, and
-never reads CRM data. Its future home is the independent repository
-`mrjosueayalaperez-dev/mq-ai-command-dashboard`; this local project mirrors
-that layout because connector write access to GitHub is currently blocked
-(HTTP 403) — nothing here has been pushed anywhere.
+never reads CRM data. It lives in the independent repository
+`mrjosueayalaperez-dev/mq-ai-command-dashboard`. (Documentation correction,
+2026-11-25: this paragraph previously said the project only mirrored that
+repository's layout locally because GitHub write access was blocked and
+nothing had been pushed. That is stale — the repository is published on
+GitHub. Publication of the code is not a deployment; see the status line
+above.)
 
 Governing principles: **Knowledge Is The Legacy.** · **Technology + People =
 Access.** · **Implemented ≠ Tested ≠ Deployed.** · Independent products,
@@ -79,7 +82,7 @@ The web UI carries all three approved interface concepts: the
 Room** (activity, executions, workflow visualizer, performance,
 economics, gateway, reliability), and the **Intelligence Network**
 (agent/team graph with communication edges). The four-language shell
-now covers the new chrome too, including the sign-in screens (64 keys
+now covers the new chrome too, including the sign-in screens (69 keys
 per catalog, parity-tested; PT/HT authored, native-speaker review
 still outstanding).
 
@@ -124,9 +127,11 @@ There are **no real agent integrations** — no external agent, model,
 or tool is connected, contacted, or probed by this system; every
 module operates on local records, and the taxonomy's evidence rule
 means nothing can be labeled verified/operational without a passing
-evidence record on file. Also not present: any hosting or deployment,
-and any GitHub write (the repository bootstrap remains blocked on
-connector Contents access — see the backlog's Dependency #1). The
+evidence record on file. Also not present: any hosting or deployment.
+(Documentation correction, 2026-11-25: this section previously also listed
+"any GitHub write" as absent, stating the repository bootstrap remained
+blocked on connector Contents access; the repository has since been
+published to GitHub, so that statement was removed as stale.) The
 Android app still speaks the retired header stand-in; its move to the
 login token below is a separate, documented step (see
 BUILD-REPORT-AUTH-2026-11-18.md).
@@ -147,8 +152,17 @@ Access is a real login, mirroring the M&Q CRM's merged auth design:
   audit actor is the session's username.
 - **Throttling**: failed logins lock per account and per client
   address with exponential backoff; failure messages are generic.
-- **First owner — server shell only** (no default password, no HTTP
-  setup route):
+- **First owner — two one-time paths** (no default password). Both
+  create the first owner only while no owner exists and refuse
+  permanently (403) once one does (Batch 010, Nov 18, 2026):
+  - **HTTP, from the sign-in page:** `GET /api/auth/bootstrap` returns
+    `{"owner_exists": bool}` and nothing else;
+    `POST /api/auth/bootstrap` with `{"username", "password",
+    "mode": "cookie" | "token"}` creates the first owner and signs
+    them in with the same response a login returns. Backed by
+    `auth.bootstrap_owner_web` in `app/auth.py`, applying the same
+    password policy as the CLI path.
+  - **Server shell:**
 
   ```bash
   python -m app.auth_cli create-owner --username <name>

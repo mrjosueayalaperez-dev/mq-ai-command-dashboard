@@ -5,6 +5,17 @@
 **Authorization:** founder order, November 18, 2026 — "Command Dashboard — all 11 modules" (full version approved)
 **Scope:** Backlog Phase 2 (items 2.1–2.9) plus completion of the Governance Center module surface (1.7 machinery, presented as a module), extending the Phase 1 foundation (36 tests) without rebuilding it.
 
+> **Correction note — 2026-11-25 (documentation only; the body of this
+> report is unchanged history).** This report states in its build
+> location line, its status block, and its closing section that the
+> build was local because GitHub write access was blocked and nothing
+> was pushed anywhere. That was accurate at the time of writing
+> (November 18, 2026). It is superseded: the repository has since been
+> published to GitHub as
+> `mrjosueayalaperez-dev/mq-ai-command-dashboard`. No other statement
+> in this report is affected; in particular, this report contains no
+> language-catalog key count and no claim about HTTP bootstrap routes.
+
 ## Honest status block
 
 **IMPLEMENTED + TESTED locally · NOT INDEPENDENTLY VERIFIED · NOT MERGED (GitHub write access still blocked) · NOT DEPLOYED**
