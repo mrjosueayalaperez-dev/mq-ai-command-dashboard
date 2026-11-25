@@ -5,6 +5,19 @@
 **Authorization:** founder approval, November 18, 2026 ("Approved build it")
 **Scope:** Phase 1 foundation scope from `MQ-AI-COMMAND-DASHBOARD-BACKLOG-2026-11-18.md` (items 1.1–1.10), per the approved specification and architecture documents.
 
+> **Correction note — 2026-11-25 (documentation only; the body of this
+> report is unchanged history).** This report states in its build
+> location line, its status block, and its closing section that the
+> build was local because GitHub writes were blocked and nothing was
+> pushed anywhere. That was accurate at the time of writing
+> (November 18, 2026). It is superseded: the repository has since been
+> published to GitHub as
+> `mrjosueayalaperez-dev/mq-ai-command-dashboard`. No other statement
+> in this report is affected; in particular, this report contains no
+> language-catalog key count and no claim about HTTP bootstrap routes
+> (real login did not exist yet at this stage — it is documented in
+> BUILD-REPORT-AUTH-2026-11-18.md).
+
 ## Honest status block
 
 **IMPLEMENTED + TESTED locally · NOT INDEPENDENTLY VERIFIED · NOT MERGED (no repository write access yet) · NOT DEPLOYED**

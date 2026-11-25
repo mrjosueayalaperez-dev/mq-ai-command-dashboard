@@ -1,5 +1,30 @@
 # BUILD REPORT — Real Login (Auth) · November 18, 2026
 
+> **Correction note — 2026-11-25 (documentation only; the body of this
+> report is unchanged history).** Three statements in this report are
+> superseded by later facts and are corrected here so no reader is
+> misled:
+>
+> 1. **Language-catalog count.** The Web UI section below states the
+>    four catalogs hold "64 keys each." The catalogs in
+>    `web/i18n/` (EN/ES/PT/HT) now contain **69 keys each**, verified
+>    by direct count on 2026-11-25. The figure in the body reflects
+>    the catalogs at the time of writing and is marked inline.
+> 2. **HTTP first-run bootstrap.** The `app/auth_cli.py` section below
+>    states "There is no HTTP setup route." That is no longer true:
+>    Batch 010 (Nov 18, 2026) implemented an HTTP first-run bootstrap —
+>    `GET /api/auth/bootstrap` (owner-exists status) and
+>    `POST /api/auth/bootstrap` (creates the first owner) in
+>    `app/main.py`, backed by `auth.bootstrap_owner_web` in
+>    `app/auth.py`. It creates the first owner only while none exists
+>    and refuses (403) permanently after. This report's CLI-only
+>    description was incomplete documentation — the endpoint was
+>    implemented, not missing.
+> 3. **Publication.** The closing status below says nothing was pushed
+>    anywhere; that was accurate at the time of writing. The repository
+>    has since been published to GitHub
+>    (`mrjosueayalaperez-dev/mq-ai-command-dashboard`).
+
 **Scope:** replace the Phase 1/2 header stand-in (`X-Role` / `X-Actor`)
 with real login authentication, mirroring the M&Q CRM's merged auth
 design (its Batch 009/009b), adapted to this codebase's audit log and
@@ -50,6 +75,10 @@ as the CRM's:
   owner; password from a no-echo prompt (twice) or `--password-stdin`;
   never on the command line, never printed/logged; refuses once any
   owner exists. There is no HTTP setup route and no default password.
+  *(Superseded in part — see the 2026-11-25 correction note at the top
+  of this report: an HTTP first-run bootstrap, GET/POST
+  `/api/auth/bootstrap`, was implemented in Batch 010. There is still
+  no default password.)*
 - `reset-password --username <name>` — recovery incl. owners: policy
   applied, all sessions + pending challenges revoked, lockout cleared.
 - `reset-totp --username <name> --yes` — break-glass factor removal.
@@ -83,7 +112,9 @@ graphite / gold / ivory) with the two-step step (authenticator code or
 recovery code), a signed-in user chip with sign-out, CSRF tokens on
 all state-changing calls, and a return to the sign-in gate on any 401.
 14 auth keys were added to all four catalogs (EN/ES/PT/HT, **64 keys
-each, parity-tested**; PT/HT authored, native-speaker review still
+each at the time of writing — corrected 2026-11-25: the catalogs now
+contain 69 keys each; see the correction note at the top of this
+report**, parity-tested; PT/HT authored, native-speaker review still
 outstanding — no production-quality language claim).
 
 **Schema**: `users`, `sessions`, `auth_throttle`, `totp_factors`,
